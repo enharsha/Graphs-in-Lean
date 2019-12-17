@@ -25,3 +25,8 @@ def b2 (x:ele):ele_2:=ele.rec_on x ele_2.p2
 def graph1:graph := {vertex:=ele_2,edge:=ele,φ1 :=b1,φ2:= b2}
 #print graph1
 
+inductive path (g:graph)(start:g.vertex):(g.vertex)→ Type u
+|fix : path start 
+|addedge (add:g.edge)(end1:g.vertex)(p: path end1)(pr:end1 = g.φ1 add): path (g.φ2 add) 
+
+#check path 
