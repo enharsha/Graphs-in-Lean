@@ -34,7 +34,4 @@ open path
 constant path1: path graph0 One.one One.one  
 #check path1
 #print path1
-
-inductive vector (α : Type u) : nat →  Type u
-| nil {} : vector 0
-| cons {n : nat} (a : α) (v : vector n) : vector (nat.succ n)  
+ 
