@@ -31,7 +31,5 @@ inductive path (g:graph)(start:g.vertex):(g.vertex) → Type u
 
 open path
 #check path 
-constant path1: path graph0 One.one One.one  
-#check path1
-#print path1
+
  
