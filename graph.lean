@@ -25,13 +25,17 @@ def b2 (x:One):Two:=Two.two
 def graph1:graph := {vertex:=Two,edge:=One,φ1 :=b1,φ2:= b2}
 #print graph1
 
-inductive path (g:graph)(start:g.vertex):(g.vertex) → Type u
-|fix : path start 
+inductive path (g:graph.{u v})(start:g.vertex):(g.vertex) → Type (max u v)
+|fix{} : path start 
 |addedge (add:g.edge)(last:g.vertex)(p: path last)(pr:last = g.φ1 add): path (g.φ2 add) 
 
-open path
 #check path 
-constant path1: path graph0 One.one One.one  
-#check path1
-#print path1
- 
+#check path.addedge
+
+/-path with single point-/
+def pathg00 : path graph0 One.one One.one:= path.fix
+/-path with one edge-/
+def pathg10 : path graph1 Two.one Two.one:= path.fix 
+def pathg11 : path graph1 Two.one Two.two := path.addedge One.one Two.one pathg10 rfl
+#check pathg11
+
