@@ -33,9 +33,9 @@ inductive path (g:graph.{u v})(start:g.vertex):(g.vertex) → Type (max u v)
 #check path.addedge
 
 /-path with single point-/
-def pathg00 : path graph0 One.one One.one:= path.fix
+def path0 : path graph0 One.one One.one:= path.fix
 /-path with one edge-/
-def pathg10 : path graph1 Two.one Two.one:= path.fix 
-def pathg11 : path graph1 Two.one Two.two := path.addedge One.one Two.one pathg10 rfl
-#check pathg11
-
+def path1a : path graph1 Two.one Two.one:= path.fix 
+def path1b : path graph1 Two.one Two.two := path.addedge One.one Two.one path1a rfl
+#check path1b
+#print path1b
