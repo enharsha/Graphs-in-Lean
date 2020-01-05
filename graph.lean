@@ -39,3 +39,12 @@ def path1a : path graph1 Two.one Two.one:= path.fix
 def path1b : path graph1 Two.one Two.two := path.addedge One.one Two.one path1a rfl
 #check path1b
 #print path1b
+
+inductive neighbor (g:graph.{u v})(s:g.vertex)
+|s: neighbor
+|head : Π t:g.edge, (g.φ1 t = s)→ neighbor
+|tail : Π r:g.edge, (g.φ2 r = s)→ neighbor
+
+#check neighbor
+#print neighbor
+
