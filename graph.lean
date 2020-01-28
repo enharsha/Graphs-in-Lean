@@ -40,11 +40,10 @@ def path1b : path graph1 Two.one Two.two := path.addedge One.one Two.one path1a 
 #check path1b
 #print path1b
 
-inductive neighbor (g:graph.{u v})(s:g.vertex)
-|s: neighbor
-|head : Π t:g.edge, (g.φ1 t = s)→ neighbor
-|tail : Π r:g.edge, (g.φ2 r = s)→ neighbor
+def neighbor (g:graph.{u v})(w:g.vertex) : g.vertex → bool:= λ s: g.vertex, if ((∃ e1:g.edge,g.φ1 e1 = s) ∨ (∃ e2: g.edge, g.φ2 e2 = s)) then 1 else 0
 
 #check neighbor
 #print neighbor
 
+structure finite_graph :=
+/-to create structure wit finite type-/
