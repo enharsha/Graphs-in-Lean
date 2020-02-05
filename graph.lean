@@ -45,5 +45,10 @@ def neighbor (g:graph.{u v})(w:g.vertex) : g.vertex → bool:= λ s: g.vertex, i
 #check neighbor
 #print neighbor
 
-structure finite_graph :=
-/-to create structure wit finite type-/
+structure finitegraph  :=
+(vertex : fintype Type u)/-syntax of fintype?-/
+(edge : fintype Type v)
+(φ1 : (edge→ vertex))
+(φ2 :(edge→ vertex))
+
+def isconnected (g: finitegraph) : Prop
