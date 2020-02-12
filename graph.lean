@@ -41,14 +41,16 @@ def path1b : path graph1 Two.one Two.two := path.addedge One.one Two.one path1a 
 #print path1b
 
 def neighbor (g:graph.{u v})(w:g.vertex) : g.vertex → bool:= λ s: g.vertex, if ((∃ e1:g.edge,g.φ1 e1 = s) ∨ (∃ e2: g.edge, g.φ2 e2 = s)) then 1 else 0
-
+/-decidable?-/
 #check neighbor
 #print neighbor
 
-structure finitegraph  :=
-(vertex : fintype Type u)/-syntax of fintype?-/
-(edge : fintype Type v)
-(φ1 : (edge→ vertex))
-(φ2 :(edge→ vertex))
+structure finitegraph (fvertex: Type)[fintype fvertex] (fedge: Type)[fintype fedge] :=
+(φ1 :(fedge→ fvertex))
+(φ2 :(fedge→ fvertex))
 
-def isconnected (g: finitegraph) : Prop
+def connected_comp (g: graph )(v: g.vertex) : g.vertex → bool:=  λ s: g.vertex, if (∃ path g v s ) then 1 else 0
+
+def ispath (g:graph)(v1:g.vertex)(v2:g.vertex):bool:=sorry
+
+
