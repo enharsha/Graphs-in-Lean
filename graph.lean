@@ -49,7 +49,7 @@ structure finitegraph (fvertex: Type)[fintype fvertex] (fedge: Type)[fintype fed
 (φ1 :(fedge→ fvertex))
 (φ2 :(fedge→ fvertex))
 
-def neighbor_of_set (g:graph.{u v})(f: g.vertex→ bool):g.vertex → bool:=sorry
+def neighbor_of_set (g:graph.{u v})(f: g.vertex→ bool):g.vertex → bool:= λ v: g.vertex, (if ∃ v': g.vertex, (f v'= true ∧ ((∃ e1:g.edge,g.φ1 e1 = v) ∨ (∃ e2: g.edge, g.φ2 e2 = v)) ) then 1 else 0
 /-neighbor of a set of vertices-/
 
 def connected_comp (g: graph )(f:g.vertex→ bool) : (g.vertex → bool):= if (neighbor_of_set g f = f) then f else (connected_comp (neighbor_of_set g f))
