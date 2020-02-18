@@ -40,10 +40,11 @@ def path1b : path graph1 Two.one Two.two := path.addedge One.one Two.one path1a 
 #check path1b
 #print path1b
 
-def neighbor (g:graph.{u v})(w:g.vertex) : g.vertex → bool:= λ s: g.vertex, if ((∃ e1:g.edge,g.φ1 e1 = s) ∨ (∃ e2: g.edge, g.φ2 e2 = s)) then 1 else 0
+def neighbor (g:graph.{u v})(w:g.vertex) : g.vertex → bool:= λ s: g.vertex, if ((∃ e1:g.edge,(g.φ1 e1 = s)∧ (g.φ2 e1 = w)) ∨ (∃ e2: g.edge, (g.φ2 e2 = s)∧ (g.φ1 e2 = w))) then 1 else 0
 /-neighbor of a vertex-/
 #check neighbor
 #print neighbor
+
 
 structure finitegraph (fvertex: Type)[fintype fvertex] (fedge: Type)[fintype fedge] :=
 (φ1 :(fedge→ fvertex))
