@@ -40,17 +40,11 @@ def path1b : path graph1 Two.one Two.two := path.addedge One.one Two.one path1a 
 #check path1b
 #print path1b
 
-def neighbor (g:graph.{u v})(w:g.vertex) : g.vertex → bool:= λ s: g.vertex, if ((∃ e1:g.edge,(g.φ1 e1 = s)∧ (g.φ2 e1 = w)) ∨ (∃ e2: g.edge, (g.φ2 e2 = s)∧ (g.φ1 e2 = w))) then 1 else 0
-/-neighbor of a vertex-/
-#check neighbor
-#print neighbor
+structure finitegraph (β :Type):=
+(fvertex: finset β )
+(fedge : finset (β × β))
+(is_sub: fedge ⊆ (finset.product fvertex fvertex))
 
+def neighbor_of_set (g:finitegraph nat)(s:finset nat): finset nat:= to_finset {v∈ g.fvertex| (∃ w:nat,w ∈ s ∧ (v,w)∈ g.fedge)}
 
-structure finitegraph (fvertex: Type)[fintype fvertex] (fedge: Type)[fintype fedge] :=
-(φ1 :(fedge→ fvertex))
-(φ2 :(fedge→ fvertex))
-
-def neighbor_of_set (g:graph.{u v})(f: g.vertex→ bool):g.vertex → bool:= λ v: g.vertex, (if ∃ v': g.vertex, (f v'= true ∧ ((∃ e1:g.edge,g.φ1 e1 = v) ∨ (∃ e2: g.edge, g.φ2 e2 = v)) ) then 1 else 0
-/-neighbor of a set of vertices-/
-
-def connected_comp (g: graph )(f:g.vertex→ bool) : (g.vertex → bool):= if (neighbor_of_set g f = f) then f else (connected_comp (neighbor_of_set g f))
+def connected_comp (g:finitegraph nat)(s:finset nat): finset nat:= if (neighbor_of_set g s = g.fvertex) then s else connected_comp g (neighbor_of_set g s)
