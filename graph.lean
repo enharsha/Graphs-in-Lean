@@ -45,6 +45,17 @@ structure finitegraph (β :Type):=
 (fedge : finset (β × β))
 (is_sub: fedge ⊆ (finset.product fvertex fvertex))
 
-def neighbor_of_set (g:finitegraph nat)(s:finset nat): finset nat:= to_finset {v∈ g.fvertex| (∃ w:nat,w ∈ s ∧ (v,w)∈ g.fedge)}
+instance decidable_neighbors [decidable_eq α] (g : finitegraph nat) (s : finset nat) (p : s ⊆ g.fvertex) :
+decidable_pred (λ (v : nat), ∃ (w : nat) (h : w ∈ s), (v,w) ∈ g.fedge) := begin
+intro,
+apply finset.decidable_dexists_finset,
+end
 
-def connected_comp (g:finitegraph nat)(s:finset nat): finset nat:= if (neighbor_of_set g s = g.fvertex) then s else connected_comp g (neighbor_of_set g s)
+def neighbor_of_set (g : finitegraph nat) (s:finset ℕ) (p: s ⊆ g.fvertex)
+: finset ℕ := finset.filter (λ v, (∃ (w : ℕ) (h : w ∈ s), (v,w) ∈ g.fedge)) s
+
+#check neighbor_of_set
+
+def filler (g:finitegraph nat)(s:finset nat)(p: s ⊆ g.fvertex): (neighbor_of_set g s p)⊆ g.fvertex:= sorry 
+
+def connected_comp (g:finitegraph nat)(s:finset nat)(p:s ⊆ g.fvertex): finset nat:= if (neighbor_of_set g s p= g.fvertex) then s else connected_comp g (neighbor_of_set g s p) (filler g s p)
