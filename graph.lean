@@ -59,3 +59,5 @@ def neighbor_of_set (g : finitegraph nat) (s:finset ℕ) (p: s ⊆ g.fvertex)
 def filler (g:finitegraph nat)(s:finset nat)(p: s ⊆ g.fvertex): (neighbor_of_set g s p)⊆ g.fvertex:= sorry 
 
 def connected_comp (g:finitegraph nat)(s:finset nat)(p:s ⊆ g.fvertex): finset nat:= if (neighbor_of_set g s p= g.fvertex) then s else connected_comp g (neighbor_of_set g s p) (filler g s p)
+
+def is_connected (g:finitegraph nat)(s:finset nat)(p:s ⊆ g.fvertex) :bool:= if connected_comp (g:finitegraph nat)(s:finset nat)(p:s ⊆ g.fvertex) = g.fvertex then true else false
