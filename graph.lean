@@ -46,12 +46,20 @@ structure finitegraph (β :Type):=
 (is_sub: fedge ⊆ (finset.product fvertex fvertex))
 
 def neighbor_of_set (g : finitegraph nat) (s:finset ℕ) (p: s ⊆ g.fvertex)
-: finset ℕ := finset.filter (λ v, (∃ (w : ℕ) (h : w ∈ s), (v,w) ∈ g.fedge)) s
+: finset ℕ := finset.filter (λ v, (∃ (w : ℕ) (h : w ∈ s), (v,w) ∈ g.fedge ∨ (w,v)∈ g.fedge)) g.fvertex
 
 #check neighbor_of_set
+#print neighbor_of_set
 
-def filler (g:finitegraph β )(s:finset β)(p: s ⊆ g.fvertex): (neighbor_of_set g s p)⊆ g.fvertex:= begin intro, apply finset.filter_subset, end
+def filler (g:finitegraph nat)(s:finset nat)(p: s ⊆ g.fvertex): (neighbor_of_set g s p)⊆ g.fvertex:= begin intro, apply finset.filter_subset, end
 
-def connected_comp (g:finitegraph β)(s:finset β)(p:s ⊆ g.fvertex): finset β:= if (neighbor_of_set g s p= g.fvertex) then s else connected_comp g (neighbor_of_set g s p) (filler g s p)
+def connected_comp (g:finitegraph nat)(s:finset nat)(p:s ⊆ g.fvertex): finset nat:=
+ if (neighbor_of_set g s p= s) then s 
+ else (connected_comp g (neighbor_of_set g s p) (filler g s p))
 
-def is_connected (g:finitegraph β)(s:finset β)(p:s ⊆ g.fvertex) :bool:= if connected_comp (g:finitegraph β)(s:finset β)(p:s ⊆ g.fvertex) = g.fvertex then true else false
+#check connected_comp
+#print connected_comp
+
+def is_connected:=λ (g:finitegraph nat)(s:finset nat)(p:s ⊆ g.fvertex),if (connected_comp g s p = g.fvertex) then true else false
+#check is_connected
+#print is_connected
