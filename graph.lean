@@ -1,5 +1,12 @@
+import data.finset
+import data.fintype
+import data.list.basic
+import data.nat.basic
+
 universes u v 
+variable β :Type
 variable α :Type u
+
 structure graph  :=
 (vertex : Type u)
 (edge : Type v)
@@ -45,8 +52,8 @@ structure finitegraph (β :Type):=
 (fedge : finset (β × β))
 (is_sub: fedge ⊆ (finset.product fvertex fvertex))
 
-def neighbor_of_set (g : finitegraph nat) (s:finset ℕ) (p: s ⊆ g.fvertex)
-: finset ℕ := finset.filter (λ v, (∃ (w : ℕ) (h : w ∈ s), (v,w) ∈ g.fedge ∨ (w,v)∈ g.fedge)) g.fvertex
+def neighbor_of_set (g : finitegraph β ) (s:finset β ) (p: s ⊆ g.fvertex) : finset β :=
+(finset.filter (λ v, (∃ (w : β ) (h : w ∈ s), (v,w) ∈ g.fedge ∨ (w,v)∈ g.fedge)) g.fvertex) ∪ s
 
 #check neighbor_of_set
 #print neighbor_of_set
