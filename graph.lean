@@ -52,21 +52,31 @@ structure finitegraph (β :Type):=
 (fedge : finset (β × β))
 (is_sub: fedge ⊆ (finset.product fvertex fvertex))
 
-def neighbor_of_set (g : finitegraph β ) (s:finset β ) : finset β :=
+def neighbor_of_set (g : finitegraph β ) (s:finset β ) (p: s ⊆ g.fvertex): finset β :=
 (finset.filter (λ v, (∃ (w : β ) (h : w ∈ s), (v,w) ∈ g.fedge ∨ (w,v)∈ g.fedge)) g.fvertex) ∪ s
 
 #check neighbor_of_set
 #print neighbor_of_set
 
-def filler (g:finitegraph nat)(s:finset nat): (neighbor_of_set g s )⊆ g.fvertex:= begin intro, apply finset.filter_subset, end
+def filler (g:finitegraph nat)(s:finset nat)(p: s ⊆ g.fvertex): (neighbor_of_set g s p) ⊆ g.fvertex:=
+begin intro, apply finset.filter_subset, end
 
-def filler2 (g:finitegraph nat)(s:finset nat): s ⊆ (neighbor_of_set g s ) := begin intro, apply finset.subset_union_right, end
+def filler2 (g:finitegraph nat)(s:finset nat)(p: s ⊆ g.fvertex): s ⊆ (neighbor_of_set g s p) := 
+begin intro, apply finset.subset_union_right, end
 
-def connected_comp (g:finitegraph nat)(s:finset nat): nat → finset nat:=
-| zero := s
-| (succ x) := neighbor_of_set (g connected_comp x) 
+structure connected_step(g: finitegraph nat) := 
+(pr1 : finset nat)
+(pr2 : pr1 ⊆ g.fvertex) 
+
+def connected_comp (g:finitegraph nat)(s:finset nat)(p:s⊆ g.fvertex): nat → connected_step g 
+| 0 := {pr1 := s, pr2:=p}
+|(x+1) := {pr1:= neighbor_of_set g (connected_comp x).pr1 (connected_comp x).pr2, 
+           pr2:= filler g (connected_comp x).pr1  (connected_comp x).pr2  } 
 
 #check connected_comp
 #print connected_comp
+
+def is_connected (g:finitegraph nat)(s:finset nat)(p:s⊆ g.fvertex):= 
+if (∃ n:nat, (connected_comp g s p (n+1)).pr1 = (connected_comp g s p n).pr1) then 1 else 0
 
 
