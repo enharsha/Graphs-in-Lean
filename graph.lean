@@ -59,7 +59,7 @@ def neighbor_of_set (g : finitegraph β ) (s:finset β ) (p: s ⊆ g.fvertex): f
 #print neighbor_of_set
 
 def filler (g:finitegraph nat)(s:finset nat)(p: s ⊆ g.fvertex): (neighbor_of_set g s p) ⊆ g.fvertex:=
-begin intro, apply finset.filter_subset, end
+begin intro, apply finset.union_subset (finset.filter_subset g.fvertex) (p),end
 
 def filler2 (g:finitegraph nat)(s:finset nat)(p: s ⊆ g.fvertex): s ⊆ (neighbor_of_set g s p) := 
 begin intro, apply finset.subset_union_right, end
