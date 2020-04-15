@@ -52,8 +52,8 @@ structure finitegraph (β :Type):=
 (fedge : finset (β × β))
 (is_sub: fedge ⊆ (finset.product fvertex fvertex))
 
-def neighbor_of_set (g : finitegraph β ) (s:finset β ) (p: s ⊆ g.fvertex): finset β :=
-(finset.filter (λ v, (∃ (w : β ) (h : w ∈ s), (v,w) ∈ g.fedge ∨ (w,v)∈ g.fedge)) g.fvertex) ∪ s
+def neighbor_of_set (g : finitegraph nat ) (s:finset nat ) (p: s ⊆ g.fvertex): finset natβ :=
+(finset.filter (λ v, (∃ (w : nat ) (h : w ∈ s), (v,w) ∈ g.fedge ∨ (w,v)∈ g.fedge)) g.fvertex) ∪ s
 
 #check neighbor_of_set
 #print neighbor_of_set
@@ -77,6 +77,7 @@ def connected_comp (g:finitegraph nat)(s:finset nat)(p:s⊆ g.fvertex): nat → 
 #print connected_comp
 
 def is_connected (g:finitegraph nat)(s:finset nat)(p:s⊆ g.fvertex):= 
-if (∃ n:nat, (connected_comp g s p (n+1)).pr1 = (connected_comp g s p n).pr1) then 1 else 0
+if ((connected_comp g s p (finset.card g.fvertex +1)).pr1 = (connected_comp g s p (finset.card g.fvertex)).pr1) then 1 else 0
 
-
+#check is_connected
+#print is_connected
