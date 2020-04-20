@@ -57,10 +57,10 @@ def neighbor_of_set (g : finitegraph nat) (s:finset nat) (p: s ⊆ g.fvertex) : 
 #check neighbor_of_set
 #print neighbor_of_set
 
-def filler (g:finitegraph nat) (s:finset nat) (p:s ⊆ g.fvertex) : (neighbor_of_set g s p) ⊆ g.fvertex :=
+lemma filler (g:finitegraph nat) (s:finset nat) (p:s ⊆ g.fvertex) : (neighbor_of_set g s p) ⊆ g.fvertex :=
 begin intro, apply finset.union_subset (finset.filter_subset g.fvertex) (p), end
 
-def filler2 (g:finitegraph nat) (s:finset nat) (p: s ⊆ g.fvertex): s ⊆ (neighbor_of_set g s p) := 
+lemma filler2 (g:finitegraph nat) (s:finset nat) (p: s ⊆ g.fvertex): s ⊆ (neighbor_of_set g s p) := 
 begin intro, apply finset.subset_union_right, end
 
 structure connected_step (g: finitegraph nat) := 
@@ -88,9 +88,9 @@ if ((connected_comp g s p (finset.card g.fvertex +1)).pr1 = g.fvertex) then 1 el
 def inputV : finset nat := {1,2,3,4,5}
 def sset : finset nat := {1,2} 
 def inputE : finset (nat × nat) := {(1,2),(1,3),(3,4),(1,5)}
-def sub : inputE ⊆ finset.product inputV inputV := sorry 
+lemma sub : inputE ⊆ finset.product inputV inputV := sorry 
 def finite1 : finitegraph nat := { fvertex:=inputV , fedge:=inputE , is_sub:=sub }
-def prf : sset ⊆ finite1.fvertex := sorry
+lemma prf : sset ⊆ finite1.fvertex := sorry
 
 #eval neighbor_of_set finite1 sset prf
 #eval (connected_comp finite1 sset prf 2).pr1
