@@ -49,7 +49,8 @@ structure finitegraph (β : Type):=
 (fedge : finset (β × β))
 (is_sub : fedge ⊆ (finset.product fvertex fvertex))
 
-/-function to calculate immediate neighbors of a subset of vertices-/
+/-function to calculate immediate neighbors of a subset of vertices;
+I have used type nat henceforth as lean is unable to figure out decidability of proposition for a general type-/
 def neighbor_of_set (g : finitegraph nat) (s:finset nat) (p: s ⊆ g.fvertex) : finset nat :=
 (finset.filter (λ v, (∃ (w : nat ) (h : w ∈ s), (v,w) ∈ g.fedge ∨ (w,v) ∈ g.fedge)) g.fvertex) ∪ s
 
@@ -81,3 +82,16 @@ if ((connected_comp g s p (finset.card g.fvertex +1)).pr1 = g.fvertex) then 1 el
 
 #check is_connected
 #print is_connected
+
+/-simple example to check computation of functions defined above; some proofs use sorry-/
+
+def inputV : finset nat := {1,2,3,4,5}
+def sset : finset nat := {1,2} 
+def inputE : finset (nat × nat) := {(1,2),(1,3),(3,4),(1,5)}
+def sub : inputE ⊆ finset.product inputV inputV := sorry 
+def finite1 : finitegraph nat := { fvertex:=inputV , fedge:=inputE , is_sub:=sub }
+def prf : sset ⊆ finite1.fvertex := sorry
+
+#eval neighbor_of_set finite1 sset prf
+#eval (connected_comp finite1 sset prf 2).pr1
+#eval is_connected finite1 sset prf
