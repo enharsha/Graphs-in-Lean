@@ -1,7 +1,4 @@
 import data.finset
-import data.fintype
-import data.list.basic
-import data.nat.basic
 
 universes u v 
 variable β :Type
@@ -52,7 +49,7 @@ structure finitegraph (β :Type):=
 (fedge : finset (β × β))
 (is_sub: fedge ⊆ (finset.product fvertex fvertex))
 
-def neighbor_of_set (g : finitegraph nat ) (s:finset nat ) (p: s ⊆ g.fvertex): finset natβ :=
+def neighbor_of_set (g : finitegraph nat ) (s:finset nat ) (p: s ⊆ g.fvertex): finset nat :=
 (finset.filter (λ v, (∃ (w : nat ) (h : w ∈ s), (v,w) ∈ g.fedge ∨ (w,v)∈ g.fedge)) g.fvertex) ∪ s
 
 #check neighbor_of_set
@@ -77,7 +74,7 @@ def connected_comp (g:finitegraph nat)(s:finset nat)(p:s⊆ g.fvertex): nat → 
 #print connected_comp
 
 def is_connected (g:finitegraph nat)(s:finset nat)(p:s⊆ g.fvertex):= 
-if ((connected_comp g s p (finset.card g.fvertex +1)).pr1 = (connected_comp g s p (finset.card g.fvertex)).pr1) then 1 else 0
+if ((connected_comp g s p (finset.card g.fvertex +1)).pr1 = g.fvertex) then 1 else 0
 
 #check is_connected
 #print is_connected
