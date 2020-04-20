@@ -50,7 +50,7 @@ structure finitegraph (β : Type):=
 (is_sub : fedge ⊆ (finset.product fvertex fvertex))
 
 /-function to calculate immediate neighbors of a subset of vertices;
-I have used type nat henceforth as lean is unable to figure out decidability of proposition for a general type-/
+I have used type nat henceforth as lean is unable to figure out decidability of proposition for a general type without a proof-/
 def neighbor_of_set (g : finitegraph nat) (s:finset nat) (p: s ⊆ g.fvertex) : finset nat :=
 (finset.filter (λ v, (∃ (w : nat ) (h : w ∈ s), (v,w) ∈ g.fedge ∨ (w,v) ∈ g.fedge)) g.fvertex) ∪ s
 
@@ -70,8 +70,8 @@ structure connected_step (g: finitegraph nat) :=
 /-function to find connected component of a subset of vertices-/
 def connected_comp (g:finitegraph nat) (s:finset nat) (p:s ⊆ g.fvertex): nat → connected_step g 
 | 0 := {pr1:=s, pr2:=p}
-|(x+1) := { pr1:=neighbor_of_set g (connected_comp x).pr1 (connected_comp x).pr2, 
-           pr2:=filler g (connected_comp x).pr1 (connected_comp x).pr2 } 
+|(x+1) := { pr1 := neighbor_of_set g (connected_comp x).pr1 (connected_comp x).pr2, 
+           pr2 := filler g (connected_comp x).pr1 (connected_comp x).pr2 } 
 
 #check connected_comp
 #print connected_comp
@@ -83,7 +83,7 @@ if ((connected_comp g s p (finset.card g.fvertex +1)).pr1 = g.fvertex) then 1 el
 #check is_connected
 #print is_connected
 
-/-simple example to check computation of functions defined above; some proofs use sorry-/
+/-simple example to check computation of functions defined above; proofs use sorry-/
 
 def inputV : finset nat := {1,2,3,4,5}
 def sset : finset nat := {1,2} 
